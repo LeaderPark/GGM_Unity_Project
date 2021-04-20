@@ -3,14 +3,39 @@ using System.Collections.Generic;
 using System.Numerics;
 using UnityEngine;
 using UnityEngine.UI;
+using System; //Serializable
+using System.IO; // File  Input / Output
+
+[SerializeField]
+public class PlayerData
+{
+    public int clickerLevel;
+    public int stageLevel;
+    public string gold; // Big Integer 형식은 string으로 저장
+
+    public void GetData()
+    {
+        Debug.Log("clickerLevel : " + clickerLevel);
+        Debug.Log("stageLevel : " + stageLevel);
+        Debug.Log("gold : " + gold);
+
+        //이렇게 데이터 접근해서 실제 데이터 매니저에서 가져오기 
+    }
+}
 
 public class DataManager : MonoBehaviour
 {
-    public Text stageLvText;
     public BigInteger gold = 1;
+
     public int stageLvCount = 1;
     public int count = 0;
     public int enemyCount;
+    public int power = 1;
+    
+    public float level = 1f;
+    public float levelUpCost = 1f;
+
+    public Text stageLvText;
 
     private static DataManager instance;
     public static DataManager Instance
@@ -38,14 +63,6 @@ public class DataManager : MonoBehaviour
             instance = value;
         }
     }
-    public void Start()
-    {
-    }
-    public void Update()
-    {
-        stageLevel();
-
-    }
 
     private void Awake()
     {
@@ -58,6 +75,16 @@ public class DataManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
     }
 
+    private void Start() 
+    {
+        SaveData();
+    }
+
+    public void Update()
+    {
+        stageLevel();
+        Debug.Log(count);
+    }
 
     public void stageLevel()
     {
@@ -66,14 +93,10 @@ public class DataManager : MonoBehaviour
             stageLvCount++;
             count = 0;
         }
-
-
-
-        stageLvText.text = "현재 스테이지 레벨 : " + stageLvCount;    
-        
+        stageLvText.text = "Stage Level : " + stageLvCount;    
     }
     
-    public string GetGoldText(BigInteger _Data)
+    public string GetGoldText(BigInteger _Data) //돈 변환 코드
     {
         string gText = string.Empty;
 
@@ -122,6 +145,22 @@ public class DataManager : MonoBehaviour
 
     }
 
+    public void SaveData()
+    {
+        PlayerData myData = new PlayerData();
+        myData.clickerLevel = (int)level;
+        myData.stageLevel = stageLvCount;
+        myData.gold = gold.ToString();
+
+        string str = JsonUtility.ToJson(myData);
+
+        Debug.Log(str); //로그 찍어보기 
+
+        File.WriteAllText(Application.persistentDataPath + "/PlayerData.json", JsonUtility.ToJson(myData));
+
+        PlayerData data2 = JsonUtility.FromJson<PlayerData>(str); // 데이터 로드
+        data2.GetData();
+    }
 }
 
    

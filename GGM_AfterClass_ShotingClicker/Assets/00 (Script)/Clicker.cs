@@ -4,58 +4,34 @@ using UnityEngine;
 
 public class Clicker : MonoBehaviour
 {
-    float LevelUpCost;
-    int  Power;
-    float Level;
-    bool colTime;
-
-
+    float nextTime;
+    public GameObject exploit;
     public Transform enemy;
 
-    private void Awake() 
+    private void Update() 
     {
-        LevelUpCost = 50 * ((int)Mathf.Pow(1.07f, DataManager.Instance.stageLvCount-1) );
-        Power = (int)(LevelUpCost * 0.4);
-        
+        DataManager.Instance.levelUpCost = (int)(50 * (Mathf.Pow(1.07f, DataManager.Instance.level-1) ));
+        DataManager.Instance.power = (int)(DataManager.Instance.levelUpCost * 0.4);
     }
-
-    private void Start() {
-        StartCoroutine("TouchTime");
-    }
-
 
     public void Attack()
     {
-        if(colTime)
+        if (Time.time >= nextTime)
         {
-            FindObjectOfType<StageManager>().enemyList[0].GetComponent<Enemy>().getDamage(Power);
+            nextTime = Time.time + 0.1f;
+            Debug.Log("클릭됨");
+            FindObjectOfType<StageManager>().enemyList[0].GetComponent<Enemy>().getDamage(DataManager.Instance.power);
+            GameObject ex = Instantiate(exploit, FindObjectOfType<StageManager>().enemyList[0].transform.position + new Vector3(-0.8f,  0, 0), Quaternion.identity);
+            Destroy(ex, 0.2f);
         }
-        
-        
-
     }
     
-    IEnumerator TouchTime()
-    {
-        while(true)
-        {
-            colTime = true;
-            yield return new WaitForSeconds(0.1f);
-            colTime = false;
-            yield return new WaitForSeconds(0.1f);
-            colTime = true;
-            
-        }
-        
-    }
-
     public void LevelUp()
     {
-        if(DataManager.Instance.gold > 0)
+        if((float)DataManager.Instance.gold > DataManager.Instance.levelUpCost)
         {
-            DataManager.Instance.gold -= (int)LevelUpCost;
-            DataManager.Instance.stageLvCount++;
-
+            DataManager.Instance.gold -= (int)DataManager.Instance.levelUpCost;
+            DataManager.Instance.level++;
         }
     }
 }

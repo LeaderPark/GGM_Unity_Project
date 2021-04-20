@@ -6,32 +6,28 @@ public class Enemy : MonoBehaviour
 {
     
     public GameObject Enemy01;
-
     public int enemyHp;
-    public int killReward ;
+    public int killReward;
 
-    float speed = 5.0f;
-    public void Awake() 
+    public float speed = 5.0f;
+    private void Awake() 
     {
         killReward = (int)(10 * Mathf.Pow(1.06f, 10) - Mathf.Pow(1.06f, (10 + DataManager.Instance.stageLvCount)) / (1 - 1.06));
-
-        
-    }
-    private void Start() {
         enemyHp = killReward * 2;
     }
     
     private void Update() 
     {
         transform.Translate(new Vector3(-speed * Time.deltaTime, 0, 0));
-        Debug.Log(killReward);
+        //Debug.Log(killReward);
+        Debug.Log(enemyHp);
     }
 
     public void getDamage(int damage)
     {
         enemyHp -= damage;
 
-        if(enemyHp <= 0)
+        if(enemyHp <= 0) 
         {
             FindObjectOfType<StageManager>().DestroyEnemy(this);
             Destroy(this.gameObject);
@@ -39,15 +35,4 @@ public class Enemy : MonoBehaviour
             DataManager.Instance.enemyCount++;
         }
     }
-
-    private void OnCollisionEnter2D(Collision2D other) 
-    {
-        
-    }
-
-    
-
-    
-    
-
 }

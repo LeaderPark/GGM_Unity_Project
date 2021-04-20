@@ -33,7 +33,6 @@ public class StageManager : MonoBehaviour
     {
         while (true)
         {
-            
             if(enemyList.Count < 5 && totalEnemy < 10)
             {
                 float randomY = Random.Range(3.0f, -3.0f);
@@ -51,8 +50,6 @@ public class StageManager : MonoBehaviour
     public void DestroyEnemy(Enemy _enemy)
     {
         enemyList.Remove(_enemy.gameObject);
-        
-
     }
 }
 

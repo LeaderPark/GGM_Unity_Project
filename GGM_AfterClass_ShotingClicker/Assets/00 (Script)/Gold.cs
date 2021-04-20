@@ -7,32 +7,22 @@ using System;
 
 public class Gold : MonoBehaviour
 {
-
-
     public Text Goldtext01;
 
-
-
-
-
-    // Start is called before the first frame update
-    void Start()
+    private void Start() 
     {
-        //Goldtext01.text = DataManager.Instance.gold;
+        Goldtext01.text = DataManager.Instance.GetGoldText(DataManager.Instance.gold);
     }
 
     private void Update()
     {
         IncreaseGold();
     }
+
     public void IncreaseGold()
     {
-        
-        
         Goldtext01.text = DataManager.Instance.GetGoldText(DataManager.Instance.gold);
     }
-    
-
 }
 
     
