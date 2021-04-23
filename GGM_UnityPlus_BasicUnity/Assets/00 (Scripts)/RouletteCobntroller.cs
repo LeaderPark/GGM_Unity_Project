@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class RouletteCobntroller : MonoBehaviour
 {
-    public float rollingSpeed = 0f;
-    private bool on = true;
+   private float rollingSpeed = 0f;
+    private bool on = false;
 
     private void Start() 
     {
@@ -16,22 +16,34 @@ public class RouletteCobntroller : MonoBehaviour
 
     private void Update() 
     {
-        if(Input.GetMouseButton(0))
+        Debug.Log(rollingSpeed);
+        Debug.Log(on);
+        // if(rollingSpeed >= 1000f)
+        // {
+        //     on = true;
+        // }
+        
+        if(!on)
         {
-            // if(on)
-            // {
-            //     gameObject.transform.localScale *= 2;
-            //     on = false;
-            // }
-            // else
-            // {
-            //     gameObject.transform.localScale /= 2;   
-            //     on = true;
-            //}
-            // on = !on; //누를때마다 on의 값을 바꿔줌
-
-            rollingSpeed = 360;
+            rollingSpeed -= 0.5f * rollingSpeed * Time.deltaTime;
         }
-            gameObject.transform.Rotate(0, 0, rollingSpeed * Time.deltaTime); 
+        else
+        {
+            rollingSpeed += 0.5f * rollingSpeed * Time.deltaTime;
+        }
+
+        if(Input.GetMouseButtonDown(0))
+        {
+            if(on){
+                on = false;
+            }
+            else{
+                rollingSpeed = 360;
+                on = true;
+            }
+        }
+
+        gameObject.transform.Rotate(0, 0, rollingSpeed * Time.deltaTime); 
+        
     }
 }
