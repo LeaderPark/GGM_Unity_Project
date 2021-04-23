@@ -15,10 +15,10 @@ public class PlayerData
 
     public void GetData()
     {
-        Debug.Log("clickerLevel : " + clickerLevel);
-        Debug.Log("stageLevel : " + stageLevel);
-        Debug.Log("gold : " + gold);
-
+        DataManager.Instance.level = clickerLevel;
+        DataManager.Instance.stageLvCount = stageLevel;
+        DataManager.Instance.gold = BigInteger.Parse(gold);
+ 
         //이렇게 데이터 접근해서 실제 데이터 매니저에서 가져오기 
     }
 }
@@ -77,13 +77,20 @@ public class DataManager : MonoBehaviour
 
     private void Start() 
     {
+        string jsonData = File.ReadAllText(Application.persistentDataPath + "/PlayerData.json");
+        PlayerData save = JsonUtility.FromJson<PlayerData>(jsonData); // 데이터 로드
+        save.GetData();
         SaveData();
     }
 
     public void Update()
     {
         stageLevel();
-        Debug.Log(count);
+
+        if(Input.GetKeyDown(KeyCode.S))
+        {
+            SaveData();
+        }
     }
 
     public void stageLevel()
@@ -91,7 +98,7 @@ public class DataManager : MonoBehaviour
         if(count == 10)
         {
             stageLvCount++;
-            count = 0;
+            count = 0;  
         }
         stageLvText.text = "Stage Level : " + stageLvCount;    
     }
@@ -157,8 +164,7 @@ public class DataManager : MonoBehaviour
         Debug.Log(str); //로그 찍어보기 
 
         File.WriteAllText(Application.persistentDataPath + "/PlayerData.json", JsonUtility.ToJson(myData));
-
-        PlayerData data2 = JsonUtility.FromJson<PlayerData>(str); // 데이터 로드
+        PlayerData data2 = JsonUtility.FromJson<PlayerData>(JsonUtility.ToJson(myData)); // 데이터 로드
         data2.GetData();
     }
 }

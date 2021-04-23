@@ -62,6 +62,7 @@ public class FadeCo : MonoBehaviour
             if(alpha < 1)
             {
                 alpha += Time.deltaTime * fadeoutdelaytime;
+                //alpha -= Time.deltaTime/fadeoutdelaytime; 
             }
             else
             {
@@ -87,6 +88,7 @@ public class FadeCo : MonoBehaviour
             if(alpha > 0)
             {
                 alpha -= Time.deltaTime * fadeindelaytime; 
+                //alpha += Time.deltaTime/fadeindelaytime; 
             }
             else
             {

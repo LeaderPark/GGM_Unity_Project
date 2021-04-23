@@ -126,3 +126,5 @@ MonoBehaviour:
   enemyHp: 0
   killReward: 0
   speed: 5
+  HpSlider: {fileID: 3522461695069645335, guid: 9c522c438b609ac4e8f238f204952790, type: 3}
+  hpPrefabs: {fileID: 1816675607372598392, guid: 9c522c438b609ac4e8f238f204952790, type: 3}

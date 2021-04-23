@@ -1105,7 +1105,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1746442226
 GameObject:
@@ -1470,7 +1470,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2030510013
 GameObject:
@@ -1533,6 +1533,8 @@ MonoBehaviour:
   enemyHp: 0
   killReward: 0
   speed: 5
+  HpSlider: {fileID: 3522461695069645335, guid: 9c522c438b609ac4e8f238f204952790, type: 3}
+  hpPrefabs: {fileID: 1816675607372598392, guid: 9c522c438b609ac4e8f238f204952790, type: 3}
 --- !u!1 &2071152399
 GameObject:
   m_ObjectHideFlags: 0
@@ -1582,5 +1584,5 @@ Transform:
   m_Children:
   - {fileID: 863447660}
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
