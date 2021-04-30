@@ -7,7 +7,12 @@ public class Clicker : MonoBehaviour
     float nextTime;
     public GameObject exploit;
     public Transform enemy;
+    
+    private void Start() 
+    {
 
+    }
+    
     private void Update() 
     {
         DataManager.Instance.levelUpCost = (int)(50 * (Mathf.Pow(1.07f, DataManager.Instance.level-1) ));

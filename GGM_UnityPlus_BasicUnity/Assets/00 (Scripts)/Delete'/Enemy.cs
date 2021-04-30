@@ -27,7 +27,7 @@ public abstract class Enemy
         }
     }
 
-    protected abstract void Dead(); 
+    protected abstract void Dead();
     //virtual은 가상함수로 자식 클래스에 같은 것이 있으면 덮어씌워서 실행된다. 우선권이 낮아짐 
     //virtual은 애매하지만 abstract는 
 
