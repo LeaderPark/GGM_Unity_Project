@@ -8,17 +8,17 @@ public class UI : MonoBehaviour
     public Text power;
     public Text levelUpCost;
     public Text level;
-    private Clicker lvup;
+
+    private ClickerManager lvup;
     // private GameObject HpBar;
 
     private void Start() 
     {
-        lvup = GameObject.Find("ClickerManager").GetComponent<Clicker>();
+        lvup = GameObject.Find("ClickerManager").GetComponent<ClickerManager>();
         //HpBar = GameObject.Find("Canvas/Slider");
         power.text = "" + DataManager.Instance.power;
         level.text = "" + DataManager.Instance.level;
         levelUpCost.text = "" + DataManager.Instance.levelUpCost;
-
     }
 
     private void Update() 
@@ -26,7 +26,6 @@ public class UI : MonoBehaviour
         power.text = "" + DataManager.Instance.power;
         level.text = "" + DataManager.Instance.level;
         levelUpCost.text = "" + DataManager.Instance.levelUpCost;
-
         // HpBar.transform.position = Camera.main.WorldToScreenPoint(transform.position + new Vector3(0, 0.8f, 0));
     }
 

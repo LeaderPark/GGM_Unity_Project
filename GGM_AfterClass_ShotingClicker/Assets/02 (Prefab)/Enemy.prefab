@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 3396568304748525981}
   - component: {fileID: -5086392209110880350}
   - component: {fileID: 7248818787880172538}
+  - component: {fileID: 6231139724285606789}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Enemy
@@ -122,9 +123,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa0f9489f16138642a4c37090a62dd70, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Enemy01: {fileID: 4382153110764470552}
+  speed: 3
   enemyHp: 0
-  killReward: 0
-  speed: 5
+--- !u!114 &6231139724285606789
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4382153110764470552}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dbb33a55867b7f243b7318e23a8c9842, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
   HpSlider: {fileID: 3522461695069645335, guid: 9c522c438b609ac4e8f238f204952790, type: 3}
+  hpPrefabs1: {fileID: 0}
   hpPrefabs: {fileID: 1816675607372598392, guid: 9c522c438b609ac4e8f238f204952790, type: 3}
+  canvas: {fileID: 0}

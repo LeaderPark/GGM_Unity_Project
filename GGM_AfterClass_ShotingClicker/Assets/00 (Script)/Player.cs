@@ -6,14 +6,17 @@ using UnityEngine.SceneManagement;
 public class Player : MonoBehaviour
 {
     private Enemy enemy;
+    private Hpslider hpslider;
 
-    private void Start() {
-        enemy = GameObject.Find("SpawnManger").GetComponent<Enemy>();
+    private void Start() 
+    {
+        enemy = GameObject.Find("EnemyMG").GetComponent<Enemy>();
+        hpslider = GameObject.Find("Enemy").GetComponent<Hpslider>();
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnTriggerEnter2D(Collider2D col)
     {
-        if(collision.tag == "Enemy")
+        if(col.CompareTag("Enemy"))
         {
             StartCoroutine("Respawn");
         }
@@ -21,12 +24,12 @@ public class Player : MonoBehaviour
 
     IEnumerator Respawn()
     {
-        yield return new WaitForSeconds(0f);
-        Destroy(enemy.hpPrefabs1);
+        Destroy(hpslider.hpPrefabs);
         Destroy(this.gameObject);
         SceneManager.LoadScene("Game");
         DataManager.Instance.stageLvCount = 1;
-        DataManager.Instance.count = 0;
-        DataManager.Instance.enemyCount = 0;
+        DataManager.Instance.totalEnemy = 0;
+        DataManager.Instance.enemykillcount = 0;
+        yield return null;
     }
 }

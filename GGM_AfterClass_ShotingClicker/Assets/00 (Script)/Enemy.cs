@@ -5,34 +5,21 @@ using UnityEngine.UI;
 
 public class Enemy : MonoBehaviour
 {
-    
-    public GameObject Enemy01;
-    public int enemyHp;
-    public int killReward;
+    public float speed;
+    public float enemyHp;
 
-    public float speed = 5.0f;
+    private Hpslider hpslider;
 
-    public Slider HpSlider;
-
-    public GameObject hpPrefabs1;
-    public GameObject hpPrefabs;
-    private Canvas canvas;
-  
     private void Awake() 
     {
-        killReward = (int)(10 * Mathf.Pow(1.06f, 10) - Mathf.Pow(1.06f, (10 + DataManager.Instance.stageLvCount)) / (1 - 1.06));
-        enemyHp = killReward * 2;
-        canvas = GameObject.Find("Canvas").GetComponent<Canvas>();
-        hpPrefabs1 = Instantiate(hpPrefabs, canvas.transform);
-        HpSlider = hpPrefabs1.GetComponent<Slider>();
+        DataManager.Instance.killReward = (int)(10 * Mathf.Pow(1.06f, 10) - Mathf.Pow(1.06f, (10 + DataManager.Instance.stageLvCount)) / (1 - 1.06));
+        enemyHp = DataManager.Instance.killReward * 2;
+        hpslider = GameObject.Find("Enemy").GetComponent<Hpslider>();
     }
     
     private void Update() 
     {
         transform.Translate(new Vector3(-speed * Time.deltaTime, 0, 0));
-        //Debug.Log(killReward);
-        Vector3 sliderpos = Camera.main.WorldToScreenPoint(new Vector3(transform.position.x ,transform.position.y + 1f, 0));
-        HpSlider.transform.position = sliderpos;
     }
 
     public void getDamage(int damage)
@@ -41,11 +28,11 @@ public class Enemy : MonoBehaviour
 
         if(enemyHp <= 0) 
         {
-            FindObjectOfType<StageManager>().DestroyEnemy(this);
-            Destroy(this.hpPrefabs1);
+            Destroy(hpslider._hpPrefabs);
             Destroy(this.gameObject);
-            DataManager.Instance.gold += killReward;
-            DataManager.Instance.enemyCount++;
+            FindObjectOfType<SpawnManager>().DestroyEnemy(this);
+            DataManager.Instance.gold += DataManager.Instance.killReward;
+            DataManager.Instance.enemykillcount++;
         }
     }
 }

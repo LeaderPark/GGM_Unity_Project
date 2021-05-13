@@ -2,25 +2,36 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Cinemachine;
 
 public class Cannon : MonoBehaviour
 {
     public GameObject ballPrefab;
     public Transform firePos;
+    public float maxPower = 1000f; 
+    public float chargingPower = 200f;
     public float power = 0;
-    public float chargeingPower = 200f;
-    public Text powerUI;
-    public Text angleUI;
-    public Slider slider;
-    public bool isuppower = true;
+    
+    static public int ballcount = 10;
 
-    public float angleSpeed = 60f;
+    public Text angleText;
+    public Text powerText;
+    public Image powerGauge;
+
+    public float angleSpeed = 60f; //초당 60도 회전
+
+    public CinemachineVirtualCamera cannonCam;
+    public CinemachineBrain mainCam;
+
+    public ParticleSystem muzzleFlash;
+
+    static public bool reload = true;
 
     void Update()
     {
-        float z = Mathf.Clamp(transform.rotation.eulerAngles.z, 1, 88);
-        transform.rotation = Quaternion.Euler(0, 0, z);
-        
+        // transform.Rotate(new Vector3(0,0, angleSpeed * Time.deltaTime));
+
+        //위에 키가 눌리는 동안
         if(Input.GetKey(KeyCode.UpArrow))
         {
             transform.Rotate(new Vector3(0,0, angleSpeed * Time.deltaTime));
@@ -30,34 +41,56 @@ public class Cannon : MonoBehaviour
             transform.Rotate(new Vector3(0,0, -angleSpeed * Time.deltaTime));
         }
 
+        float z = Mathf.Clamp(transform.rotation.eulerAngles.z, 1, 88);
+        transform.rotation = Quaternion.Euler(0, 0, z);
 
-        if(Input.GetMouseButtonDown(0))
+        if(reload && ballcount != 0)
         {
-            power = 0;
-            slider.value = 0;
-        }
-        else if(Input.GetMouseButton(0))
-        {
-            power += chargeingPower * Time.deltaTime;
-            power = Mathf.Clamp(power, 0, 1000);
-        }
-        else if(Input.GetMouseButtonUp(0))
-        {
-            Fire();
+            if(Input.GetMouseButtonDown(0))
+            {
+                power = 0;
+            }
+            else if(Input.GetMouseButton(0))
+            {  
+                power += chargingPower * Time.deltaTime * 2;
+                power = Mathf.Clamp(power, 0, maxPower);    
+            }
+            else if(Input.GetMouseButtonUp(0))
+            {
+                Fire();
+                reload = false;
+            }
         }
 
-        angleUI.text = $"{z}º";
-        powerUI.text = power.ToString("N0");
-        slider.value = power;
+
+        angleText.text = $"{z.ToString("N0")}º";
+        powerText.text = power.ToString("N0");
+        powerGauge.fillAmount = power / maxPower;
     }
-
-
 
     private void Fire()
     {
+        StartCoroutine(DelayFire());
+        ballcount--; 
+    }
+
+    IEnumerator DelayFire()
+    {
+        mainCam.m_DefaultBlend.m_Time = 1f;
+        Vector3 next = firePos.position;
+        next.z = cannonCam.transform.position.z;
+        cannonCam.transform.position = next;
+
+        cannonCam.gameObject.SetActive(true);
+
+        yield return new WaitForSeconds(1f);
+
         GameObject ball = Instantiate(ballPrefab, firePos.position, Quaternion.identity);
-        cannonball bs = ball.GetComponent<cannonball>();
-        bs.Shoot(firePos.right, power);
-        Destroy(ball, 2f);
+        CannonBallScript bs = ball.GetComponent<CannonBallScript>();
+        bs.Shoot( firePos.right, power, cannonCam);
+
+        muzzleFlash.Play();
+
+        cannonCam.Follow = ball.transform;
     }
 }
